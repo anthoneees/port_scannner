@@ -1,18 +1,37 @@
 import socket
-import sys
 
-def portScanner(server, port):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def port_scanner(server, port):
+    """
+    scans the given server and port
+    
+    Parameters
+    -----------
+    server : string
+        domain name
+    port : int
+        port number
+
+    Returns
+    ----------
+    bool
+        True if port exists, false if it does not
+
+     """
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        s.connect((server, port))
-    except:
-        return False;
+        sock.connect((server, port))
+    except socket.gaierror:
+        print("Invalid Hostname")
+        return False
+    except socket.error:
+        print("Server Connection Error")
     else:
-        return True;
+        return True
 
 host = input("Enter the host: ")
-for port in range(1,1025):
-    if portScanner(host, port):
-        print(f"{host}:{port} is open")
+for i in range(1,5000):
+    if port_scanner(host, i):
+        print(f"{host}:{i} is open")
     else:
-        print(f"{host}:{port} is closed", end ="\r")
+        print(f"{host}:{i} is closed", end ="\r")
+
